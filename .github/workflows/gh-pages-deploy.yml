@@ -17,5 +17,5 @@ jobs:
         run: |
           git config --global user.email "water34545@yandex.ru"
           git config --global user.name "Water34545"
-          git remote set-url origin https://${{ secrets.GH_PAGES }}@github.com/Water34545/movie-app.git
+          git remote set-url origin https://Water34545:${{ secrets.GH_PAGES }}@github.com/Water34545/movie-app.git
           npm run deploy
