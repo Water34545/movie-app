@@ -1,0 +1,21 @@
+name: GitHub Pages Action
+on: [push]
+jobs:
+  gh-pages:
+    name: GitHub Pages
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-versions: 16
+      - name: Install dependencies
+        run: npm ci
+      - name: Deploy
+        run: |
+          git config --global user.email "water34545@yandex.ru"
+          git config --global user.name "Water34545"
+          git remote set-url origin https://${{ secrets.GH_PAGES }}@github.com/Water34545/movie-app.git
+          npm run deploy
