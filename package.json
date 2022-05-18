@@ -23,7 +23,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build"
+    "deploy": "gh-pages -d build"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
