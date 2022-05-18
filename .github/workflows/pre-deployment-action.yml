@@ -3,14 +3,14 @@ on: [push]
 jobs:
   checkout:
     name: github/pr-head
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Cache npm dependencies
         uses: actions/cache@v2
         with:
@@ -22,14 +22,14 @@ jobs:
         run: npm ci
   lint:
     name: ESLint
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Cache npm dependencies
         uses: actions/cache@v2
         with:
