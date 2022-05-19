@@ -1,4 +1,4 @@
-export interface IFilmGeners {
+export interface IGenersResponce {
   genres: IFilmGener[]
 }
 

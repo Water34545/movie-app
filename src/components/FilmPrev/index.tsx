@@ -38,7 +38,7 @@ const FilmPrev: FC<IFilmPreview> = ({title, vote_average, release_date, overview
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between'}}>
           <Button size="small">More info</Button>
-          <Tooltip title="Add to favorite" placement="top">
+          <Tooltip title="Add to Watchlist" placement="top">
               <IconButton>
                 <FavoriteIcon />
               </IconButton>

@@ -1,6 +1,6 @@
 import { IFilmPreview } from "./IFilmPreview"
 
-export interface moviesResponce {
+export interface IMoviesResponce {
   results: IFilmPreview[]
   page: number
   total_pages: number

@@ -6,7 +6,7 @@ const AuthContext: React.Context<IAuthContext> = createContext({});
 
 interface IAuthContext {
   user?: string
-  login?: (data: any) => Promise<void>
+  login?: (data: any) => void
   logout?: () => void
 }
 
@@ -18,9 +18,9 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
 
-  const login = useCallback(async (data: any) => {
-    setUser(data);
-    navigate("/profile");
+  const login = useCallback((request_token: string) => {
+    setUser(request_token);
+    navigate("/watchlist");
   }, [navigate, setUser]);
 
   const logout = useCallback(() => {

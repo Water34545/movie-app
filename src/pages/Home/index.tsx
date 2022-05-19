@@ -11,8 +11,8 @@ import Box from '@mui/material/Box';
 import { movieService } from '../../api/movieService';
 import { IFilmPreview } from '../../api/utils/IFilmPreview';
 import FilmPrev from '../../components/FilmPrev';
-import { movieDiscoverProps, VoteAverage } from '../../api/utils/movieDiscoverProps';
-import { IFilmGener } from '../../api/utils/IFilmGenres';
+import { IMovieDiscover, IVoteAverage } from '../../api/utils/IMovieDiscover';
+import { IFilmGener } from '../../api/utils/IGenersResponce';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 
@@ -41,9 +41,9 @@ const sortValues = [
 ]
 
 const HomePage = () => {
-  const [filterValues, setFilterValues] = useState<movieDiscoverProps>({
-    [VoteAverage.gte]: 0,
-    [VoteAverage.lte]: 10
+  const [filterValues, setFilterValues] = useState<IMovieDiscover>({
+    [IVoteAverage.gte]: 0,
+    [IVoteAverage.lte]: 10
   });
   const [films, setFilms] = useState<IFilmPreview[]>([]);
   const [filmGenres, setFilmGenres] = useState<IFilmGener[]>([]);
@@ -88,8 +88,8 @@ const HomePage = () => {
 
     setFilterValues({
       ...filterValues,
-      [VoteAverage.gte]: value[0],
-      [VoteAverage.lte]: value[1]
+      [IVoteAverage.gte]: value[0],
+      [IVoteAverage.lte]: value[1]
     })
   };
 
@@ -150,7 +150,7 @@ const HomePage = () => {
             Set Raiting
           </Typography>
           <Slider
-            value={[filterValues[VoteAverage.gte], filterValues[VoteAverage.lte]]}
+            value={[filterValues[IVoteAverage.gte], filterValues[IVoteAverage.lte]]}
             onChange={handleChangeSlider}
             valueLabelDisplay="auto"
             max={10}
