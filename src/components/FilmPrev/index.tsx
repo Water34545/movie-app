@@ -21,7 +21,7 @@ const FilmPrev: FC<IFilmPreview> = ({title, vote_average, release_date, overview
         <CardContent sx={{ flex: '1 0 auto' }}> 
           <Rating name="read-only" value={vote_average/2} readOnly size="small"/>
           {title.length < 20 ? 
-          <Typography component="div" variant="h5" sx={{height: 65 }}>
+          <Typography component="div" variant="h5" sx={{height: 65, overflow: 'hidden'}}>
             {title}
           </Typography> : 
           <Tooltip title={title} placement="top" sx={{height: 65 }}>
