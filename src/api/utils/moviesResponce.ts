@@ -1,7 +1,7 @@
-import { filmPreview } from "./filmPreview"
+import { IFilmPreview } from "./IFilmPreview"
 
 export interface moviesResponce {
-  results: filmPreview[]
+  results: IFilmPreview[]
   page: number
   total_pages: number
   total_results: number

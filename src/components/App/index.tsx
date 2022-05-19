@@ -1,31 +1,103 @@
 import {useState, useEffect} from 'react';
 import Header from '../Header';
+import Chip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Box from '@mui/material/Box';
 import { movieService } from '../../api/movieService';
-import { filmPreview } from '../../api/utils/filmPreview';
+import { IFilmPreview } from '../../api/utils/IFilmPreview';
 import FilmPrev from '../FilmPrev';
+import { movieDiscoverProps, VoteAverage } from '../../api/utils/movieDiscoverProps';
+import { IFilmGener } from '../../api/utils/IFilmGenres';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const sortValues = [
+  {value: 'popularity.asc', name: 'Sort by popularity ↓'},
+  {value: 'popularity.desc', name: 'Sort by popularity ↑'},
+  {value: 'release_date.asc', name: 'Sort by release date ↓'},
+  {value: 'elease_date.desc', name: 'Sort by release date ↑'},
+  {value: 'revenue.asc', name: 'Sort by revenue ↓'},
+  {value: 'revenue.desc', name: 'Sort by revenue ↑'},
+  {value: 'original_title.asc', name: 'Sort by title ↓'},
+  {value: 'original_title.desc', name: 'Sort by title ↑'},
+  {value: 'vote_average.asc', name: 'Sort by average ↓'},
+  {value: 'vote_average.desc', name: 'Sort by average ↑'},
+]
 
 const App = () => {
-  const [seachFilm, setSeachFilm] = useState('');
-  const [films, setFilms] = useState<filmPreview[]>([]);
-  const filmGenres = ['Horror', 'Comedy', 'Triller'];
+  const [filterValues, setFilterValues] = useState<movieDiscoverProps>({
+    [VoteAverage.gte]: 0,
+    [VoteAverage.lte]: 10
+  });
+  const [films, setFilms] = useState<IFilmPreview[]>([]);
+  const [filmGenres, setFilmGenres] = useState<IFilmGener[]>([]);
 
   useEffect(() => {
     const fetchFilms = async () => {
-      const {data: {results}} = await movieService.getPopular();
-      setFilms(results);
+      try {
+        const {data: {results}} = await movieService.movieDiscover(filterValues);
+        setFilms(results);
+      } catch {
+        console.log('movieDiscover error');
+      }
+    }
+    const timeout = setTimeout(() => {
+      fetchFilms();
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [filterValues]);
+
+  useEffect(() => {
+    const fetchFilms = async () => {
+      try {
+        const {data: {genres}} = await movieService.getGeners();
+        setFilmGenres(genres);
+      } catch {
+        console.log('getGeners error');
+      }
     }
     fetchFilms();
-  }, [])
+  }, []);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setSeachFilm(event.target.value as string);
+  const handleChangeGenres = (event: SelectChangeEvent<number[]>) => {
+    const {target: {value}} = event;
+    setFilterValues({
+      ...filterValues, 
+      with_genres: typeof value === 'string' ? [] : value
+    });
+  };
+
+  const handleChangeSlider = (event: Event, value: number | number[]) => {
+    if (!Array.isArray(value)) return;
+
+    setFilterValues({
+      ...filterValues,
+      [VoteAverage.gte]: value[0],
+      [VoteAverage.lte]: value[1]
+    })
+  };
+
+  const handleChangeSelect = (event: SelectChangeEvent) => {
+    setFilterValues({
+      ...filterValues,
+      sort_by: event.target.value as string});
   };
 
   return (
@@ -33,25 +105,65 @@ const App = () => {
       <Header/>
       <Container sx={{ mt: '90px', mb: '30px'}}>
         <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <TextField fullWidth label="Type film name"/>
-          </Grid>
           <Grid item xs={4}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Choose film genre</InputLabel>
+            <FormControl sx={{width: '100%' }}>
+            <InputLabel id="genre-label">Choose genre</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                value={seachFilm}
-                label="Choose film genre"
-                onChange={handleChange}
-              >
-                {filmGenres.map(item => <MenuItem value={item}>{item}</MenuItem>)}
+                labelId="genre-label"
+                multiple
+                value={filterValues.with_genres || []}
+                onChange={handleChangeGenres}
+                input={<OutlinedInput label="Choose genre" />}
+                MenuProps={MenuProps}
+                renderValue={selected => (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {filmGenres.filter(gener => selected.includes(gener.id)).map(gener => (
+                      <Chip key={gener.id} label={gener.name} variant="outlined" sx={{height: 23}}/>
+                    ))}
+                  </Box>
+                )}>
+                  {filmGenres.map(genre => (
+                    <MenuItem
+                      key={genre.id}
+                      value={genre.id}
+                    >
+                      {genre.name}
+                    </MenuItem>)
+                  )}
               </Select>
             </FormControl>
           </Grid>
+          <Grid item xs={4}>
+            <FormControl sx={{width: '100%' }}>
+              <InputLabel id="choose-sort">Choose sort</InputLabel>
+              <Select
+                labelId="Choose sort"
+                value={filterValues.sort_by}
+                label="Choose sort"
+                onChange={handleChangeSelect}
+                MenuProps={MenuProps}
+              >
+                {sortValues.map(item => 
+                  <MenuItem key={item.value} value={item.value}>{item.name}</MenuItem>)
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography id="input-slider" gutterBottom>
+              Set Raiting
+            </Typography>
+            <Slider
+              value={[filterValues[VoteAverage.gte], filterValues[VoteAverage.lte]]}
+              onChange={handleChangeSlider}
+              valueLabelDisplay="auto"
+              max={10}
+              step={0.1}
+            />
+          </Grid>
         </Grid>
         <Grid container spacing={2}>
-          {films.map(film => <Grid item xs={4}>
+          {films.map(film => <Grid item xs={4} key={film.id}>
             <FilmPrev {...film}/>
           </Grid>)}
         </Grid>
