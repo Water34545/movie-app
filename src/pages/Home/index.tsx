@@ -70,7 +70,7 @@ const HomePage = () => {
       fetchFilms();
     }, 300);
     return () => clearTimeout(timeout);
-  }, [filterValues]);
+  }, [filterValues, session_id, user]);
 
   useEffect(() => {
     const fetchFilms = async () => {

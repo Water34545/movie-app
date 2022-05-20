@@ -23,6 +23,7 @@ const FavoriteListPage = () => {
       }
     }
     getWatchList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addOfDeleteVaforite = (id: number, isFavorite: boolean) => {
