@@ -48,7 +48,7 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
     setUser(null);
     setSessionId(null);
     navigate("/", { replace: true });
-  }, [setUser, navigate]);
+  }, [setUser, navigate, setSessionId]);
 
   const value = useMemo(
     () => ({
