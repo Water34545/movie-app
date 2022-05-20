@@ -14,7 +14,12 @@ import { IFilmPreview } from '../../api/utils/IFilmPreview';
 
 const imageLocation = 'https://image.tmdb.org/t/p/w220_and_h330_face/';
 
-const FilmPrev: FC<IFilmPreview> = ({title, vote_average, release_date, overview, poster_path}) => {
+interface IFilmPrev extends IFilmPreview {
+  isFavorite: boolean
+  favoriteHandle: (id: number, isFavorite: boolean) => void
+}
+
+const FilmPrev: FC<IFilmPrev> = ({id, title, vote_average, release_date, overview, poster_path, isFavorite, favoriteHandle}) => {
   return (
     <Card sx={{ display: 'flex', mt: '20px' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -38,9 +43,9 @@ const FilmPrev: FC<IFilmPreview> = ({title, vote_average, release_date, overview
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between'}}>
           <Button size="small">More info</Button>
-          <Tooltip title="Add to Watchlist" placement="top">
-              <IconButton>
-                <FavoriteIcon />
+          <Tooltip title={isFavorite ? 'Delete from Watchlist' : 'Add to Watchlist'} placement="top">
+              <IconButton onClick={() => favoriteHandle(id, isFavorite)}>
+                <FavoriteIcon color={isFavorite ? 'secondary' : 'inherit'}/>
               </IconButton>
           </Tooltip>
         </CardActions>

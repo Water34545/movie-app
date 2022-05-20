@@ -37,12 +37,12 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
         const {data} = await movieService.getAccount({session_id});
         setUser(data);
         setSessionId(session_id);
-        navigate("/watchlist");
+        navigate("/favorite");
       }
     } catch (error) {
       console.log(error);
     }
-  }, [navigate, setUser]);
+  }, [navigate, setUser, setSessionId]);
 
   const logout = useCallback(() => {
     setUser(null);

@@ -7,8 +7,8 @@ import Grid from '@mui/material/Grid';
 import FilmPrev from '../../components/FilmPrev';
 import { Typography } from '@mui/material';
 
-const WatchlListPage = () => {
-  const [watchList, setWatchList] = useState<IFilmPreview[]>([]);
+const FavoriteListPage = () => {
+  const [films, setFilms] = useState<IFilmPreview[]>([]);
   const {user, session_id} = useAuth();
 
   useEffect(() => {
@@ -16,26 +16,29 @@ const WatchlListPage = () => {
       try {
         if (user && session_id) {
           const {data: {results}} = await movieService.getFavorite({account_id: user.id, session_id});
-          setWatchList(results)
+          setFilms(results)
         }
       } catch (error) {
         console.log(error)
       }
     }
     getWatchList();
-  }, [])
-  
+  }, []);
+
+  const addOfDeleteVaforite = (id: number, isFavorite: boolean) => {
+    console.log(id)
+  }
 
   return <Container sx={{ mt: '90px', mb: '30px'}}>
     <Typography variant="h2" component="h1" gutterBottom>
-      Your Watch List
+      Your Favorite List
     </Typography>
     <Grid container spacing={2}>
-        {watchList.map(film => <Grid item xs={4} key={film.id}>
-          <FilmPrev {...film}/>
+        {films.map(film => <Grid item xs={4} key={film.id}>
+          <FilmPrev {...film} isFavorite favoriteHandle={addOfDeleteVaforite}/>
         </Grid>)}
       </Grid>
   </Container>
 }
 
-export default WatchlListPage;
+export default FavoriteListPage;

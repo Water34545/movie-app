@@ -100,9 +100,9 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user ? [<MenuItem key='WatchList' onClick={handleCloseUserMenu}>
-                  <Link to='/watchlist'>
-                    <Typography textAlign='center'>WatchList</Typography>
+              {user ? [<MenuItem key='Favorite' onClick={handleCloseUserMenu}>
+                  <Link to='/favorite'>
+                    <Typography textAlign='center'>Favorite</Typography>
                   </Link>
                 </MenuItem>,
                 <MenuItem key='LogOut' onClick={handleCloseUserMenu}>

@@ -9,6 +9,7 @@ import { IGetSessionResp } from './utils/IGetSessionResp';
 import { IMovieDiscover } from './utils/IMovieDiscover';
 import { IMoviesResponce } from './utils/IMoviesResponce';
 import { IUserData } from './utils/IUserData';
+import ISetFavorite from './utils/ISetFavorite';
 
 const api_key = 'cb04e99c26b90dd693ce35bda9db5d36';
 const language = 'en-US';
@@ -43,6 +44,17 @@ export const movieService = {
   getSession: (props: IGetSessionData) => {
     return Api.post<IGetSessionResp>(`/authentication/session/new?api_key=${api_key}`, {
       ...props,
+    });
+  },
+  setFavorite: (props: ISetFavorite) => {
+    return Api.post(`/account/${props.account_id}/favorite?api_key=${api_key}&session_id=${props.session_id}`, {
+      media_type: "movie",
+      media_id: props.media_id,
+      favorite: props.favorite
+    }, {
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      }
     });
   },
   getAccount: (props: IGetAccount) => {
