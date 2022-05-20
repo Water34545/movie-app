@@ -2,7 +2,7 @@ import Api from './api';
 import { IAuthResp } from './utils/IAuthResp';
 import { IGenersResponce } from './utils/IGenersResponce';
 import { IGetAccount } from './utils/IGetAccount';
-import { IGetAccountResp } from './utils/IGetAccountResp';
+import { IUser } from './utils/IUser';
 import { IGetFavoritData } from './utils/IGetFavoritData';
 import { IGetSessionData } from './utils/IGetSessionData';
 import { IGetSessionResp } from './utils/IGetSessionResp';
@@ -46,7 +46,7 @@ export const movieService = {
     });
   },
   getAccount: (props: IGetAccount) => {
-    return Api.get<IGetAccountResp>(`/account`, {params: {
+    return Api.get<IUser>(`/account`, {params: {
       api_key,
       ...props,
     }});

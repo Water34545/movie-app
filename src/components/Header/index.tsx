@@ -11,7 +11,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { deepOrange } from '@mui/material/colors';
 import { useAuth } from '../../hooks/useAuth';
 
 const pages = [
@@ -80,7 +79,8 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {user ? <Avatar alt="Travis Howard" src="/static/images/avatar/1.jpeg" sx={{ bgcolor: deepOrange[500] }}/> :
+                {user ? <Avatar alt="Travis Howard" 
+                    src={`https://www.gravatar.com/avatar/${user.avatar?.gravatar?.hash}.jpg`}/> :
                   <Avatar src="/broken-image.jpg" />}
               </IconButton>
             </Tooltip>
@@ -100,21 +100,20 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user ? <>
-                <Link to='/watchlist'>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">WatchList</Typography>
-                  </MenuItem>
-                </Link>
+              {user ? [<MenuItem key='WatchList' onClick={handleCloseUserMenu}>
+                  <Link to='/watchlist'>
+                    <Typography textAlign='center'>WatchList</Typography>
+                  </Link>
+                </MenuItem>,
+                <MenuItem key='LogOut' onClick={handleCloseUserMenu}>
+                  <Typography onClick={logout} textAlign='center'>LogOut</Typography>
+                </MenuItem>]
+               :
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography onClick={logout} textAlign="center">LogOut</Typography>
-                </MenuItem>
-              </> :
-                <Link to='/login'>
-                  <MenuItem onClick={handleCloseUserMenu}>
+                  <Link to='/login'>
                     <Typography textAlign="center">LogIn</Typography>
-                  </MenuItem>
-                </Link>}
+                  </Link>
+                </MenuItem>}
             </Menu>
           </Box>
         </Toolbar>

@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
 import { useAuth } from '../../hooks/useAuth';
 
 const LoginPage = () => {

@@ -1,12 +1,14 @@
 import { createContext, FC, ReactNode, useCallback, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { movieService } from "../../api/movieService";
+import { IUser } from "../../api/utils/IUser";
 import { useLocalStorage } from "../useLocalStorage";
 
 const AuthContext: React.Context<IAuthContext> = createContext({});
 
 interface IAuthContext {
-  user?: string
+  user?: IUser
+  session_id?: string
   login?: (data: ILoginProps) => void
   logout?: () => void
 }
@@ -22,6 +24,8 @@ interface IAuthProvider {
 
 export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", null);
+  const [session_id, setSessionId] = useLocalStorage("session_id", null);
+
   const navigate = useNavigate();
 
   const login = useCallback(async ({username, password}: ILoginProps) => {
@@ -32,6 +36,7 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
         const {data: {session_id}} = await movieService.getSession({request_token});
         const {data} = await movieService.getAccount({session_id});
         setUser(data);
+        setSessionId(session_id);
         navigate("/watchlist");
       }
     } catch (error) {
@@ -47,10 +52,11 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
   const value = useMemo(
     () => ({
       user,
+      session_id,
       login,
       logout
     }),
-    [user, login, logout]
+    [user, login, logout, session_id]
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

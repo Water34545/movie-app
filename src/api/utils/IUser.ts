@@ -1,10 +1,10 @@
-export interface IGetAccountResp {
+export interface IUser {
   avatar?: {
-    gravatar?: {
-      hash?: string
+    gravatar: {
+      hash: string
     }
   }
-  id?: number
+  id: number
   iso_639_1?: string
   iso_3166_1?: string
   name?: string
