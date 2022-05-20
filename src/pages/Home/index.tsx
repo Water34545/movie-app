@@ -119,8 +119,6 @@ const HomePage = () => {
           favorite: !isFavorite
         });
         if(success) {
-          console.log(favoriteIds);
-          console.log(id);
           const newFavorite = [...favoriteIds];
           isFavorite ? newFavorite.splice(newFavorite.indexOf(id), 1 ) : newFavorite.push(id);
           console.log(newFavorite);
