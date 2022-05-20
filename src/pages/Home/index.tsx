@@ -109,7 +109,8 @@ const HomePage = () => {
   };
 
   const addOfDeleteVaforite = async (id: number, isFavorite: boolean) => {
-    if(!user && !session_id) navigate('/login');
+    console.log(user, session_id)
+    if(!user || !session_id) navigate('/login');
     try {
       if(user && session_id) {
         const {data: {success}} = await movieService.setFavorite({

@@ -46,6 +46,7 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
 
   const logout = useCallback(() => {
     setUser(null);
+    setSessionId(null);
     navigate("/", { replace: true });
   }, [setUser, navigate]);
 
