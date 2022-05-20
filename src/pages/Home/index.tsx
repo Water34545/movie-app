@@ -100,6 +100,9 @@ const HomePage = () => {
   };
 
   return <Container sx={{ mt: '90px', mb: '30px'}}>
+    <Typography variant="h2" component="h1" gutterBottom>
+      Home: see and filter moovies!
+    </Typography>
     <Grid container spacing={2}>
       <Grid item xs={4}>
         <FormControl sx={{width: '100%' }}>

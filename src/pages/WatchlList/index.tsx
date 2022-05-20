@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { IFilmPreview } from '../../api/utils/IFilmPreview';
 import Grid from '@mui/material/Grid';
 import FilmPrev from '../../components/FilmPrev';
+import { Typography } from '@mui/material';
 
 const WatchlListPage = () => {
   const [watchList, setWatchList] = useState<IFilmPreview[]>([]);
@@ -26,6 +27,9 @@ const WatchlListPage = () => {
   
 
   return <Container sx={{ mt: '90px', mb: '30px'}}>
+    <Typography variant="h2" component="h1" gutterBottom>
+      Your Watch List
+    </Typography>
     <Grid container spacing={2}>
         {watchList.map(film => <Grid item xs={4} key={film.id}>
           <FilmPrev {...film}/>
