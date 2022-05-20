@@ -58,7 +58,7 @@ const Header = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => <Link to={page.to}>
+              {pages.map((page) => <Link to={page.to} key={page.name}>
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
@@ -66,7 +66,7 @@ const Header = () => {
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => <Link to={page.to}>
+            {pages.map((page) => <Link to={page.to} key={page.name}>
                 <Button
                   key={page.name}
                   onClick={handleCloseNavMenu}
@@ -100,9 +100,16 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user ? <MenuItem onClick={handleCloseUserMenu}>
+              {user ? <>
+                <Link to='/watchlist'>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">WatchList</Typography>
+                  </MenuItem>
+                </Link>
+                <MenuItem onClick={handleCloseUserMenu}>
                   <Typography onClick={logout} textAlign="center">LogOut</Typography>
-                </MenuItem> :
+                </MenuItem>
+              </> :
                 <Link to='/login'>
                   <MenuItem onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">LogIn</Typography>

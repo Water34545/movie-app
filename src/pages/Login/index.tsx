@@ -8,28 +8,16 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import { movieService } from '../../api/movieService';
 import { useAuth } from '../../hooks/useAuth';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
   const {login} = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      const {data} = await movieService.login({username, password});
-      if(data.success) {
-        setError(null);
-        login && login(data.request_token);
-      } else {
-        setError(data.status_message || null);
-      }
-    } catch(e) {
-      console.log(e);
-    }
+    login && login({username, password});
   }
 
   return <Container sx={{ mt: '90px', mb: '30px'}}>
