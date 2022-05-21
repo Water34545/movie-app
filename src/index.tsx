@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import './scss/main.scss';
 
 const root = ReactDOM.createRoot(
@@ -12,8 +12,8 @@ console.log(process.env.PUBLIC_URL)
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter basename={process.env.PUBLIC_URL}>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
