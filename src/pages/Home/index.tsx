@@ -169,7 +169,7 @@ const HomePage = () => {
             <InputLabel id="choose-sort">Choose sort</InputLabel>
             <Select
               labelId="Choose sort"
-              value={filterValues.sort_by}
+              value={filterValues.sort_by || ''}
               label="Choose sort"
               onChange={handleChangeSelect}
               MenuProps={MenuProps}
