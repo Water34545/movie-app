@@ -1,4 +1,4 @@
-export interface IAuthResp {
+export interface IAuthResponce {
   success: boolean,
   expires_at?: string,
   request_token?: string,

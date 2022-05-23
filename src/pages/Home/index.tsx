@@ -15,8 +15,7 @@ import { IMovieDiscover, IVoteAverage } from '../../api/utils/IMovieDiscover';
 import { IFilmGener } from '../../api/utils/IGenersResponce';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
-import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import useFavorite from '../../hooks/useFavorite';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -47,20 +46,15 @@ const HomePage = () => {
     [IVoteAverage.gte]: 0,
     [IVoteAverage.lte]: 10
   });
-  const {user, session_id} = useAuth();
+  
   const [films, setFilms] = useState<IFilmPreview[]>([]);
-  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
   const [filmGenres, setFilmGenres] = useState<IFilmGener[]>([]);
-  const navigate = useNavigate();
+  const {favoriteIds, updateFavorite} = useFavorite();
 
   useEffect(() => {
     const fetchFilms = async () => {
       try {
         const {data: {results}} = await movieService.movieDiscover(filterValues);
-        if (user && session_id) {
-          const {data: {results}} = await movieService.getFavorite({account_id: user.id, session_id});
-          setFavoriteIds(results.map(result => result.id))
-        }
         setFilms(results);
       } catch {
         console.log('movieDiscover error');
@@ -70,7 +64,7 @@ const HomePage = () => {
       fetchFilms();
     }, 300);
     return () => clearTimeout(timeout);
-  }, [filterValues, session_id, user]);
+  }, [filterValues]);
 
   useEffect(() => {
     const fetchFilms = async () => {
@@ -107,29 +101,6 @@ const HomePage = () => {
       ...filterValues,
       sort_by: event.target.value as string});
   };
-
-  const addOfDeleteVaforite = async (id: number, isFavorite: boolean) => {
-    console.log(user, session_id)
-    if(!user || !session_id) navigate('/login');
-    try {
-      if(user && session_id) {
-        const {data: {success}} = await movieService.setFavorite({
-          session_id, 
-          account_id: user.id, 
-          media_id: id, 
-          favorite: !isFavorite
-        });
-        if(success) {
-          const newFavorite = [...favoriteIds];
-          isFavorite ? newFavorite.splice(newFavorite.indexOf(id), 1 ) : newFavorite.push(id);
-          console.log(newFavorite);
-          setFavoriteIds(newFavorite);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return <Container sx={{ mt: '90px', mb: '30px'}}>
     <Typography variant="h2" component="h1" gutterBottom>
@@ -195,7 +166,7 @@ const HomePage = () => {
       </Grid>
       <Grid container spacing={2}>
         {films.map(film => <Grid item xs={4} key={film.id}>
-          <FilmPrev {...film} isFavorite={favoriteIds.includes(film.id)} favoriteHandle={addOfDeleteVaforite}/>
+          <FilmPrev {...film} isFavorite={favoriteIds.includes(film.id)} favoriteHandle={updateFavorite}/>
         </Grid>)}
       </Grid>
     </Container>

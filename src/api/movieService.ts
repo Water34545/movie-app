@@ -1,15 +1,17 @@
 import Api from './api';
-import { IAuthResp } from './utils/IAuthResp';
+import { IAuthResponce } from './utils/IAuthResponce';
 import { IGenersResponce } from './utils/IGenersResponce';
 import { IGetAccount } from './utils/IGetAccount';
 import { IUser } from './utils/IUser';
-import { IGetFavoritData } from './utils/IGetFavoritData';
-import { IGetSessionData } from './utils/IGetSessionData';
-import { IGetSessionResp } from './utils/IGetSessionResp';
+import { IGetFavorite } from './utils/IGetFavorite';
+import { IGetSession } from './utils/IGetSession';
+import { IGetSessionResponce } from './utils/IGetSessionResponce';
 import { IMovieDiscover } from './utils/IMovieDiscover';
 import { IMoviesResponce } from './utils/IMoviesResponce';
-import { IUserData } from './utils/IUserData';
+import { ILogin } from './utils/ILogin';
 import ISetFavorite from './utils/ISetFavorite';
+import { IGetMovie } from './utils/IGetMovie';
+import IMovieResponce from './utils/IMovieResponce';
 
 const api_key = 'cb04e99c26b90dd693ce35bda9db5d36';
 const language = 'en-US';
@@ -32,17 +34,17 @@ export const movieService = {
     }}); 
   },
   getToken: () => {
-    return Api.get<IAuthResp>('/authentication/token/new', {params: {
+    return Api.get<IAuthResponce>('/authentication/token/new', {params: {
       api_key
     }});
   },
-  login: (props: IUserData) => {
-    return Api.post<IAuthResp>(`/authentication/token/validate_with_login?api_key=${api_key}`, {
+  login: (props: ILogin) => {
+    return Api.post<IAuthResponce>(`/authentication/token/validate_with_login?api_key=${api_key}`, {
       ...props,
     });
   },
-  getSession: (props: IGetSessionData) => {
-    return Api.post<IGetSessionResp>(`/authentication/session/new?api_key=${api_key}`, {
+  getSession: (props: IGetSession) => {
+    return Api.post<IGetSessionResponce>(`/authentication/session/new?api_key=${api_key}`, {
       ...props,
     });
   },
@@ -63,11 +65,14 @@ export const movieService = {
       ...props,
     }});
   },
-  getFavorite: (props: IGetFavoritData) => {
+  getFavorite: (props: IGetFavorite) => {
     return Api.get<IMoviesResponce>(`/account/${props.account_id}/favorite/movies`, {params: {
       api_key,
       language,
       session_id: props.session_id
     }})
+  },
+  getMovie: (props: IGetMovie) => {
+    return Api.get<IMovieResponce>(`/movie/${props.movie_id}?api_key=${api_key}&language=en-US`)
   }
 };

@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Rating from '@mui/material/Rating';
 import { IFilmPreview } from '../../api/utils/IFilmPreview';
+import { Link } from 'react-router-dom';
 
 const imageLocation = 'https://image.tmdb.org/t/p/w220_and_h330_face/';
 
@@ -42,7 +43,9 @@ const FilmPrev: FC<IFilmPrev> = ({id, title, vote_average, release_date, overvie
           </Typography>
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'space-between'}}>
-          <Button size="small">More info</Button>
+          <Link to={`/${id}`}>
+            <Button size="small">More info</Button>
+          </Link>
           <Tooltip title={isFavorite ? 'Delete from Watchlist' : 'Add to Watchlist'} placement="top">
               <IconButton onClick={() => favoriteHandle(id, isFavorite)}>
                 <FavoriteIcon color={isFavorite ? 'secondary' : 'inherit'}/>
