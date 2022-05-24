@@ -1,6 +1,8 @@
+import { AxiosError } from "axios";
 import { createContext, FC, ReactNode, useCallback, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { movieService } from "../../api/movieService";
+import { IRequestError } from "../../api/utils/IRequestError";
 import { IUser } from "../../api/utils/IUser";
 import { useLocalStorage } from "../useLocalStorage";
 
@@ -9,6 +11,7 @@ const AuthContext: React.Context<IAuthContext> = createContext({});
 interface IAuthContext {
   user?: IUser
   session_id?: string
+  error?: string
   login?: (data: ILoginProps) => void
   logout?: () => void
 }
@@ -24,6 +27,7 @@ interface IAuthProvider {
 
 export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", null);
+  const [error, setError] = useLocalStorage("error", null);
   const [session_id, setSessionId] = useLocalStorage("session_id", null);
 
   const navigate = useNavigate();
@@ -37,12 +41,14 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
         const {data} = await movieService.getAccount({session_id});
         setUser(data);
         setSessionId(session_id);
+        setError(null);
         navigate("/favorite");
       }
     } catch (error) {
-      console.log(error);
+      const {response} = error as AxiosError<IRequestError>;
+      setError(response?.data?.status_message)
     }
-  }, [navigate, setUser, setSessionId]);
+  }, [setUser, setSessionId, setError, navigate]);
 
   const logout = useCallback(() => {
     setUser(null);
@@ -54,10 +60,11 @@ export const AuthProvider: FC<IAuthProvider> = ({ children }) => {
     () => ({
       user,
       session_id,
+      error,
       login,
       logout
     }),
-    [user, login, logout, session_id]
+    [user, login, logout, error, session_id]
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

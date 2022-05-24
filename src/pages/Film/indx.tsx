@@ -136,4 +136,4 @@ const Film = () => {
   </Container>
 }
 
-export default Film
+export default Film;

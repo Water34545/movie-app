@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { useAuth } from '../../hooks/useAuth';
@@ -12,9 +13,9 @@ import { useAuth } from '../../hooks/useAuth';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {login} = useAuth();
+  const {login, error} = useAuth();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     login && login({username, password});
   }
@@ -32,6 +33,7 @@ const LoginPage = () => {
         Sign in
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <TextField margin="normal"
           value={username}
           onChange={({target: {value}}) => setUsername(value)}
