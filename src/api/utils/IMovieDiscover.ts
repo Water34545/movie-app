@@ -6,6 +6,6 @@ export enum IVoteAverage {
 export interface IMovieDiscover {
   with_genres?: number[]
   sort_by?: string
-  [IVoteAverage.lte] : number
-  [IVoteAverage.gte] : number
+  [IVoteAverage.lte]?: number
+  [IVoteAverage.gte]?: number
 }
