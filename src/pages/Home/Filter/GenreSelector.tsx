@@ -17,9 +17,7 @@ interface IGenresSelector {
   onChange: (value: IMovieDiscover) => void
 };
 
-const GenresSelector: FC<IGenresSelector> = ({with_genres, filmGenres, onChange}) => {
-console.log('test')
-return <Grid item md={4} sm={6} xs={12}>
+const GenresSelector: FC<IGenresSelector> = ({with_genres, filmGenres, onChange}) => <Grid item md={4} sm={6} xs={12}>
   <FormControl sx={{width: '100%' }}>
     <InputLabel id="genre-label">Choose genre</InputLabel>
       <Select
@@ -38,6 +36,6 @@ return <Grid item md={4} sm={6} xs={12}>
         </MenuItem>)}
     </Select>
   </FormControl>
-</Grid>};
+</Grid>
 
 export default memo(GenresSelector);
