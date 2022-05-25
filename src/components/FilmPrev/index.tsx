@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import { FC, memo} from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -21,6 +21,7 @@ interface IFilmPrev extends IFilmPreview {
 }
 
 const FilmPrev: FC<IFilmPrev> = ({id, title, vote_average, release_date, overview, poster_path, isFavorite, favoriteHandle}) => {
+  console.log('test')
   return (
     <Card sx={{ display: 'flex', mt: '20px' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -63,4 +64,4 @@ const FilmPrev: FC<IFilmPrev> = ({id, title, vote_average, release_date, overvie
   );
 }
 
-export default FilmPrev;
+export default memo(FilmPrev);
