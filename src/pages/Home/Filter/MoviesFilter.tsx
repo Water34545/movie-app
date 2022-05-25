@@ -1,6 +1,5 @@
-import { FC } from 'react';
+import { FC, useCallback, useMemo, memo} from 'react';
 import Grid from '@mui/material/Grid';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { IMovieDiscover, IVoteAverage } from '../../../api/utils/IMovieDiscover';
 import { IFilmGener } from '../../../api/utils/IGenersResponce';
 import GenresSelector from './GenreSelector';
@@ -14,46 +13,33 @@ interface IMoviesFilter {
 }
 
 const MoviesFilter: FC<IMoviesFilter> = ({filterValues, filmGenres, setFilterValues}) => {
-  const handleChangeGenres = (event: SelectChangeEvent<number[]>) => {
-    const {target: {value}} = event;
-    setFilterValues({
-      ...filterValues, 
-      with_genres: typeof value === 'string' ? [] : value
-    });
-  };
+  const handleFilterChange = useCallback((value: IMovieDiscover) => {
+    if(typeof(value)=== 'string') return;
+    setFilterValues((prevState) => ({
+      ...prevState,
+      ...value
+    }));
+  }, [setFilterValues]);
 
-  const handleChangeCort = (event: SelectChangeEvent) => {
-    setFilterValues({
-      ...filterValues,
-      sort_by: event.target.value as string});
-  };
-
-  const handleChangeRaiting = (event: Event, value: number | number[]) => {
-    if (!Array.isArray(value)) return;
-
-    setFilterValues({
-      ...filterValues,
-      [IVoteAverage.gte]: value[0],
-      [IVoteAverage.lte]: value[1]
-    })
-  };
+  const myF = useCallback((value: IMovieDiscover) => console.log(value), []);
+  const arr = useMemo(() => [0, 10], []);
 
   return <Grid container spacing={2}>
     <GenresSelector 
-      onChange={handleChangeGenres} 
+      onChange={handleFilterChange} 
       with_genres={filterValues.with_genres} 
       filmGenres={filmGenres}
     />
     <SortSelector 
-      onChange={handleChangeCort}
+      onChange={handleFilterChange}
       sort_by={filterValues.sort_by}
     />
     <VoteAverageSlider 
-      onChange={handleChangeRaiting}
+      onChange={handleFilterChange}
       min={filterValues[IVoteAverage.gte]}
       max={filterValues[IVoteAverage.lte]}
     />
   </Grid>
 }
 
-export default MoviesFilter
+export default memo(MoviesFilter);

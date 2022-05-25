@@ -25,10 +25,7 @@ const HomePage = () => {
         console.log('movieDiscover error');
       }
     }
-    const timeout = setTimeout(() => {
-      fetchFilms();
-    }, 300);
-    return () => clearTimeout(timeout);
+    fetchFilms();
   }, [filterValues]);
 
   useEffect(() => {
@@ -53,7 +50,7 @@ const HomePage = () => {
       filmGenres={filmGenres}
       />
     <Grid container spacing={2}>
-      {films.map(film => <Grid item xs={4} key={film.id}>
+      {films.map(film => <Grid item md={4} sm={6} xs={12} key={film.id}>
         <FilmPrev {...film} isFavorite={favoriteIds.includes(film.id)} favoriteHandle={updateFavorite}/>
       </Grid>)}
     </Grid>
