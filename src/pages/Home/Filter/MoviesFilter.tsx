@@ -21,9 +21,6 @@ const MoviesFilter: FC<IMoviesFilter> = ({filterValues, filmGenres, setFilterVal
     }));
   }, [setFilterValues]);
 
-  const myF = useCallback((value: IMovieDiscover) => console.log(value), []);
-  const arr = useMemo(() => [0, 10], []);
-
   return <Grid container spacing={2}>
     <GenresSelector 
       onChange={handleFilterChange} 
