@@ -43,15 +43,15 @@ const Film = () => {
   }, [film.id, favoriteIds]);
 
   return <Container sx={{ mt: '90px', mb: '30px'}}>
-    <Grid container spacing={2}>
-      <Grid item xs={4}>
+    <Grid container spacing={2} justifyContent="center">
+      <Grid item md={4} sm={12}>
         {film.poster_path && <CardMedia
           component="img"
           src={`${imageLocation}${film.poster_path}`}
           alt={film.title}
         />}
       </Grid>
-      <Grid item xs={8}>
+      <Grid item md={8} sm={12}>
         {film.vote_average && <Rating name="read-only" value={film.vote_average/2} readOnly size="small"/>}
         <Grid container justifyContent="space-between">
           <Grid item>
