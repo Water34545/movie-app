@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-export const useLocalStorage = (keyName: string, defaultValue: string | null) => {
+export const useLocalStorage = <T>(keyName: string, initialValue: T): [T, (newValue: T) => void] => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName);
       if (value) {
-        return JSON.parse(value);
+        return JSON.parse(value) as T;
       } else {
-        window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
-        return defaultValue;
+        window.localStorage.setItem(keyName, JSON.stringify(initialValue));
+        return initialValue;
       }
     } catch (err) {
-      return defaultValue;
+      return initialValue;
     }
   });
-  const setValue = (newValue: string) => {
+  const setValue = (newValue: T) => {
     try {
       window.localStorage.setItem(keyName, JSON.stringify(newValue));
     } catch (err) {}
