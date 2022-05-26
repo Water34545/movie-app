@@ -50,9 +50,12 @@ const HomePage = () => {
       filmGenres={filmGenres}
       />
     <Grid container spacing={2}>
-      {films.map(film => <Grid item md={4} sm={6} xs={12} key={film.id}>
-        <FilmPrev {...film} isFavorite={favoriteIds.includes(film.id)} favoriteHandle={updateFavorite}/>
-      </Grid>)}
+      {films.map(film => <FilmPrev 
+        key={film.id} 
+        {...film} 
+        isFavorite={favoriteIds.includes(film.id)} 
+        favoriteHandle={updateFavorite}/>
+      )}
     </Grid>
   </Container>
 }

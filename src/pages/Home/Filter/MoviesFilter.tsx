@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, memo} from 'react';
+import { FC, useCallback, memo} from 'react';
 import Grid from '@mui/material/Grid';
 import { IMovieDiscover, IVoteAverage } from '../../../api/utils/IMovieDiscover';
 import { IFilmGener } from '../../../api/utils/IGenersResponce';

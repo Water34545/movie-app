@@ -1,4 +1,4 @@
-import { FC, memo} from 'react';
+import { FC, memo } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,6 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Rating from '@mui/material/Rating';
+import Grid from '@mui/material//Grid'
 import { IFilmPreview } from '../../api/utils/IFilmPreview';
 import { Link } from 'react-router-dom';
 
@@ -21,8 +22,7 @@ interface IFilmPrev extends IFilmPreview {
 }
 
 const FilmPrev: FC<IFilmPrev> = ({id, title, vote_average, release_date, overview, poster_path, isFavorite, favoriteHandle}) => {
-  console.log('test')
-  return (
+  return <Grid item md={4} sm={6} xs={12}>
     <Card sx={{ display: 'flex', mt: '20px' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}> 
@@ -61,7 +61,7 @@ const FilmPrev: FC<IFilmPrev> = ({id, title, vote_average, release_date, overvie
         alt={title}
       />}
     </Card>
-  );
+  </Grid>;
 }
 
-export default memo(FilmPrev);
+export default FilmPrev;

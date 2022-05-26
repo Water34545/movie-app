@@ -12,10 +12,13 @@ const FavoriteListPage = () => {
       Your Favorite List
     </Typography>
     <Grid container spacing={2}>
-        {favorite.map(film => <Grid item xs={4} key={film.id}>
-          <FilmPrev {...film} isFavorite favoriteHandle={updateFavorite}/>
-        </Grid>)}
-      </Grid>
+        {favorite.map(film => <FilmPrev 
+          key={film.id} 
+          {...film} 
+          isFavorite 
+          favoriteHandle={updateFavorite}/>
+        )}
+    </Grid>
   </Container>
 }
 

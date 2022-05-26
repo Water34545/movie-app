@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useCallback, useRef, memo } from 'react';
+import { FC, useState, useEffect, useCallback, memo } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
