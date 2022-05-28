@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../useAuth";
 import { movieService } from '../../api/movieService';
 import { IFilmPreview } from '../../api/utils/IFilmPreview';
@@ -10,20 +10,17 @@ const useFavorite = () => {
   const {user, session_id} = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getFavorite = async() => {
-      try {
-        if (user && session_id) {
-          const {data: {results}} = await movieService.getFavorite({account_id: user.id, session_id});
-          setFavorite(results);
-          setFavoriteIds(results.map(movie => movie.id));
-        }
-      } catch (error) {
-        console.log('movieDiscover error');
+  const getFavorite = useCallback(async() => {
+    try {
+      if (user && session_id) {
+        const {data: {results}} = await movieService.getFavorite({account_id: user.id, session_id});
+        setFavorite(results);
+        setFavoriteIds(results.map(movie => movie.id));
       }
+    } catch (error) {
+      console.log('movieDiscover error');
     }
-    getFavorite();
-  }, [session_id, user, favoriteIds]);
+  }, [session_id, user]);
 
   const updateFavorite = async (id: number, isFavorite?: boolean) => {
     if(id === -1) return;
@@ -40,12 +37,17 @@ const useFavorite = () => {
           const newFavorite = [...favoriteIds];
           isFavorite ? newFavorite.splice(newFavorite.indexOf(id), 1 ) : newFavorite.push(id);
           setFavoriteIds(newFavorite);
+          getFavorite();
         }
       }
     } catch (error) {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    getFavorite();
+  }, [getFavorite]);
 
   return {favorite, favoriteIds, updateFavorite}
 }
